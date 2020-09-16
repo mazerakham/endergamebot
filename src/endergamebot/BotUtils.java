@@ -23,6 +23,9 @@ public class BotUtils {
     return Math.abs(a.i - b.i) + Math.abs(a.j - b.j);
   }
 
+  public static boolean equals(Tile a, Tile b) {
+    return (a.i == b.i) && (a.j == b.j);
+  }
   /**
    * Uses l1Distance (assumes no diagonal movement).
    */
@@ -31,8 +34,13 @@ public class BotUtils {
     return minimize(resourceLocations, tile -> l1Distance(startPoint, tile));
   }
 
-  public static void moveToward(Unit unit, Tile target) {
-    unit.moveTo(target);
+  public static void moveToward(Unit unit, Tile target, JakeBoard board) {
+    Tile nextTile = new PathSearch(unit.tile, target, board).getNextTile();
+    if (nextTile != null) {
+      unit.moveTo(nextTile);
+    } else {
+      // don't move if there's no path.
+    }
   }
 
   public static <T> T minimize(Collection<T> objs, Function<T, Integer> function) {

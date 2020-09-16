@@ -3,7 +3,6 @@ package endergamebot;
 import com.ender.game.client.Bot;
 import com.ender.game.client.EndersGameClient;
 import com.ender.game.model.Base;
-import com.ender.game.model.Direction;
 import com.ender.game.model.Grid;
 import com.ender.game.model.Player;
 import com.ender.game.model.UnitType;
@@ -19,16 +18,22 @@ import com.ender.game.model.UnitType;
  */
 public class JakeBot1 implements Bot {
 
-  private static final int WORKER_COUNT_GOAL = 3;
+  private final String alias;
+
+  private static final int WORKER_COUNT_GOAL = 1;
+
+  public JakeBot1(String alias) {
+    this.alias = alias;
+  }
 
   @Override
   public String getName() {
-    return "JakeBot1";
+    return alias;
   }
 
   @Override
   public String getEmail() {
-    return "jake@ender.com";
+    return "jake" + alias + "@ender.com";
   }
 
   @Override
@@ -38,8 +43,6 @@ public class JakeBot1 implements Bot {
     maybeBuildWarriors(jakeBoard);
     gatherResources(jakeBoard);
     attackEnemy(jakeBoard);
-
-    grid.getUnits(me).forEach(unit -> unit.move(Direction.NORTH));
   }
 
   private void maybeBuildWorkers(JakeBoard jakeBoard) {
@@ -67,12 +70,12 @@ public class JakeBot1 implements Bot {
   private void attackEnemy(JakeBoard jakeBoard) {
     Base enemyBase = jakeBoard.getTheirBase();
     jakeBoard.getWarriors().forEach(jakeWarrior -> {
-      jakeWarrior.attackEnemy(enemyBase.tile);
+      jakeWarrior.attackEnemy(enemyBase.tile, jakeBoard);
     });
   }
 
   public static void main(String[] args) {
-    EndersGameClient.run(new JakeBot1())
+    EndersGameClient.run(new JakeBot1("jakebot1"))
         .openWebBrowserWhenMatchStarts();
   }
 
