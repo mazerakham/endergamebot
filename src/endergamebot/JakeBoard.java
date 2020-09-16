@@ -18,12 +18,25 @@ public class JakeBoard {
   private final Player them;
   private final Grid grid;
 
-  public JakeBoard(Player me, Player them, Grid grid) {
+  public JakeBoard(Player me, Grid grid) {
     this.me = me;
-    this.them = them;
     this.grid = grid;
+    this.them = findThem();
   }
   
+  private Player findThem() {
+    for (Tile tile : grid.getTiles()) {
+      if (!tile.entity.isPresent()) {
+        continue;
+      } else if (tile.entity.get().owner.equals(me)) {
+        continue;
+      } else {
+        return tile.entity.get().owner;
+      }
+    }
+    throw new IllegalStateException("Couldn't find other player.");
+  }
+
   public Base getMyBase() {
     return grid.getBase(me);
   }
@@ -37,7 +50,7 @@ public class JakeBoard {
   }
 
   public Collection<JakeWorker> getWorkers() {
-    return XList.create(grid.getUnits(me)).filter(u -> u.type == UnitType.WORKER).map(JakeWorker::new);
+    return XList.create(grid.getUnits(me)).filter(u -> u.type == UnitType.WORKER).map(u -> new JakeWorker(u));
   }
 
   public Collection<Tile> getResourceLocations() {
@@ -45,7 +58,11 @@ public class JakeBoard {
   }
 
   public Collection<JakeWarrior> getWarriors() {
-    return XList.create(grid.getUnits(me)).filter(u -> u.type == UnitType.WARRIOR).map(JakeWarrior::new);
+    return XList.create(grid.getUnits(me)).filter(u -> u.type == UnitType.WARRIOR).map(u -> new JakeWarrior(u));
+  }
+
+  public Tile getTile(int i, int j) {
+    return this.grid.get(i, j).orElse(null);
   }
 
 }

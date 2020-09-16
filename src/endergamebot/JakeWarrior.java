@@ -15,16 +15,15 @@ public class JakeWarrior {
     this.warrior = unit;
   }
 
-  public void attackEnemy(Tile tile) {
+  public void attackEnemy(Tile tile, JakeBoard jakeBoard) {
     if (canAttack(tile)) {
       warrior.attack(tile);
     } else {
-      warrior.moveTo(tile);
-      warrior.attack(tile); // not sure if this is allowed. Probably not.
+      BotUtils.moveToward(warrior, tile, jakeBoard);
     }
   }
 
   public boolean canAttack(Tile tile) {
-    return UnitType.WARRIOR.attackRange <= BotUtils.l1Distance(warrior.tile, tile);
+    return UnitType.WARRIOR.attackRange >= BotUtils.l1Distance(warrior.tile, tile);
   }
 }
