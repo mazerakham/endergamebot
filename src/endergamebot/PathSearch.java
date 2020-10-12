@@ -100,7 +100,7 @@ public class PathSearch {
     int i = tile.i;
     int j = tile.j;
     return XList
-        .create(board.getTile(i - 1, j), board.getTile(i + 1, j), board.getTile(i, j + 1), board.getTile(i, j - 1))
+        .of(board.getTile(i - 1, j), board.getTile(i + 1, j), board.getTile(i, j + 1), board.getTile(i, j - 1))
         .removeNulls();
   }
 }
