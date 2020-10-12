@@ -22,13 +22,17 @@ public class JakeBot1 implements Bot {
 
   private static final int WORKER_COUNT_GOAL = 1;
 
+  public JakeBot1() {
+    alias = "";
+  }
+
   public JakeBot1(String alias) {
     this.alias = alias;
   }
 
   @Override
   public String getName() {
-    return alias;
+    return alias.isEmpty() ? "JakeBot1" : alias;
   }
 
   @Override
@@ -75,7 +79,7 @@ public class JakeBot1 implements Bot {
   }
 
   public static void main(String[] args) {
-    EndersGameClient.run(new JakeBot1("jakebot1"))
+    EndersGameClient.run(new JakeBot1())
         .openWebBrowserWhenMatchStarts();
   }
 

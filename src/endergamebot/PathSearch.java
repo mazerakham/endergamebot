@@ -41,12 +41,18 @@ public class PathSearch {
   }
 
   private void computeDists() {
+    int i = 0;
     enqueue(finish);
     while (!toCheck.isEmpty() && !isChecked(start)) {
+      i++;
       Pair<Integer, Integer> next = toCheck.remove();
       Tile nextTile = board.getTile(next.a, next.b);
+      if (isChecked(nextTile)) {
+        continue;
+      }
       check(nextTile);
     }
+    // Log.debug("Path search complete in " + i + " steps.");
   }
 
   private void check(Tile tile) {
